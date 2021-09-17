@@ -91,7 +91,7 @@ const params: DocumentClient.UpdateItemInput = {
 await documentClient.update(params).promise();
 ```
 
-# SNS
+## SNS
 
 ```js
 import * as SNS from 'aws-sdk/clients/sns';
