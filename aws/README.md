@@ -133,3 +133,23 @@ const params = {
 const { Payload } = await this.lambda.invoke(params).promise();
 return PlatformUtils.safeParse(Payload);
 ```
+
+## STS
+
+```js
+import * as STS from 'aws-sdk/clients/sts';
+
+const sts = new STS();
+const params = {
+     RoleArn: roleArn,
+     RoleSessionName: new Date().getTime().toString(),
+};
+
+const assumeRole = await sts.assumeRole(params).promise();
+
+return {
+    accessKeyId: assumeRole.Credentials.AccessKeyId,
+    secretAccessKey: assumeRole.Credentials.SecretAccessKey,
+    sessionToken: assumeRole.Credentials.SessionToken,
+ };
+```
