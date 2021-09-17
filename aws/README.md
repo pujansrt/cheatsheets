@@ -1,5 +1,6 @@
 ## DynamoDB
 
+### Get
 ```js
 const documentClient = new DocumentClient();
 
@@ -12,6 +13,7 @@ const {Item} = await documentClient.get({
 }).promise();
 ```
 
+### Query
 ```js
 const {Items: Records} = await documentClient.query({
     TableName: 'TABLE_NAME',
@@ -28,23 +30,8 @@ const {Items: Records} = await documentClient.query({
 }).promise();
 ```
 
-```js
-const {Items: Records} = await documentClient.put({
-    TableName: 'TABLE_NAME',
-    Item: {...user, updatedAt: Date.now()}
-}).promise();
-```
 
-```js
-const result = await documentClient.delete({
-    Key: {
-        invitee: 'name@gmail.com',
-        ownerId: '1234'
-    },
-    TableName: 'TABLE_NAME',
-}).promise();
-```
-
+### Query Iterative
 Iterative when items are huge
 ```js
 const params = {
@@ -72,7 +59,26 @@ while ('LastEvaluatedKey' in res) {
 }
 ```
 
+### Put
+```js
+const {Items: Records} = await documentClient.put({
+    TableName: 'TABLE_NAME',
+    Item: {...user, updatedAt: Date.now()}
+}).promise();
+```
 
+### Delete
+```js
+const result = await documentClient.delete({
+    Key: {
+        invitee: 'name@gmail.com',
+        ownerId: '1234'
+    },
+    TableName: 'TABLE_NAME',
+}).promise();
+```
+
+### Update
 ```js
 const params: DocumentClient.UpdateItemInput = {
     TableName: 'TABLE_NAME',
@@ -127,7 +133,7 @@ return sqs.sendMessage(params).promise();
 import * as Lambda from 'aws-sdk/clients/lambda';
 
 const params = {
-    FunctionName: 'lambda-fn-name', // OR ARN
+    FunctionName: 'lambda-fn-name', // Or full arn if cross account. If cross account, add resource-based policy in source lambda
     Payload: JSON.stringify({ query: { tz } }),
 };
 const { Payload } = await this.lambda.invoke(params).promise();
